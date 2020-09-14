@@ -17,11 +17,8 @@ Function Get-AHSavingsReport {
 .PARAMETER ReportPath
     Specifies the path the report should be output to
 
-.PARAMETER UnusedNICs
-
-.PARAMETER UnusedPIPs
-
-.PARAMETER UnusedDisks
+.PARAMETER IncludeCost
+    Include cost data in the output for supported resources - This makes the command take about 25x longer to run.
 
 .EXAMPLE
     Get-AHSavingsReport -AllSubscriptions
@@ -41,17 +38,20 @@ Function Get-AHSavingsReport {
         [Switch]
         $AllSubscriptions,
 
-        [switch]
-        $HTML,
+        [bool]
+        $HTML = $true,
 
-        [switch]
-        $CSV,
+        [bool]
+        $CSV = $true,
 
         [Parameter(ValueFromPipeline = $true)]
         $Subscription,
 
         [string]
-        $ReportPath = ".\"
+        $ReportPath = ".\",
+
+        [switch]
+        $IncludeCost
     )
     begin {
         #validate ReportPath here
@@ -68,9 +68,9 @@ Function Get-AHSavingsReport {
             param($CSV, $HTML)
             $ReportName = (Get-AzContext).name.split('(')[0].replace(' ', '')
             
-            $UnusedDisks = Get-AHUnusedDisks
-            $UnusedNICs = Get-AHUnusedNICs
-            $UnusedPIPs = Get-AHUnusedPIPs
+            $UnusedDisks = Get-AHUnusedDisks -IncludeCost:$IncludeCost
+            $UnusedNICs = Get-AHUnusedNICs -IncludeCost:$IncludeCost
+            $UnusedPIPs = Get-AHUnusedPIPs -IncludeCost:$IncludeCost
             $DBAllocation = Get-AHDBAllocation
             $ExtraDiskGBPaidFor = Get-AHExtraDiskGBPaidFor
             $AHNonHubWindowsServers = Get-AHNonHubWindowsServers

@@ -14,6 +14,9 @@ function Get-AHUnusedNICs {
 .PARAMETER Subscription
     Specifies the subscription to run against. The default is the current subscription.
 
+.PARAMETER IncludeCost
+    Include cost data in the output - This makes the command take about 25x longer to run.
+
 .EXAMPLE
     Get-AHUnusedNICs -AllSubscriptions
 
@@ -35,13 +38,22 @@ function Get-AHUnusedNICs {
         $AllSubscriptions,
     
         [Parameter(ValueFromPipeline = $true)]
-        $Subscription
+        $Subscription,
+
+        [switch]
+        $IncludeCost
     )
     begin {
+        $CurrentSubscription = (Get-AzContext).Subscription.Name
+        $SelectSplat = @{N = "Subscription"; E = { $CurrentSubscription } }, 'ResourceGroupName', 'VirtualMachine', 'MacAddress', 'NetworkSecurityGroup', 'PrivateEndpoint', 'Location', 'Id', 'Name'
+        If ($IncludeCost) {
+            $SelectSplat += @{N = 'Last30DayCost'; E = { Get-AHResourceCost -ResourceId $_.Id -ToThePenny } }
+        }
+
         $MyScriptBlock = {
-            Get-AzDisk | Where-Object {
+            Get-AzNetworkInterface | Where-Object {
                 $null -eq $_.ManagedBy
-            } | Select-Object @{N = "Subscription"; E = { (Get-AzContext).Subscription.Name } }, ResourceGroupName, ManagedBy, DiskState, OsType, Location, DiskSizeGB, Id, Name
+            } | Select-Object -Property $SelectSplat
         }
     }
     process {
