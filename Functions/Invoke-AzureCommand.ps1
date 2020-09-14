@@ -6,6 +6,10 @@ function Invoke-AzureCommand {
 .DESCRIPTION
     Invoke-AzureCommand runs a script block against a different context or every 
     subscription.  
+.PARAMETER ScriptBlock
+    The script block to run
+.PARAMETER ArgumentList
+    Specifies an array of arguments to pass to the ScriptBlock 
 .PARAMETER AllSubscriptions
     Run this command against all subscriptions.
 .PARAMETER Subscription
@@ -19,7 +23,7 @@ function Invoke-AzureCommand {
 .INPUTS
     ScriptBlock
 .OUTPUTS
-    Array
+    [array]
 .NOTES
     Author:  Paul Harrison
 #>
@@ -39,7 +43,6 @@ function Invoke-AzureCommand {
     )
 
     process {
-        Write-Host "In Invoke-AzureCommand ArgumentList = $ArgumentList"
 
         if (-not $AllSubscriptions -and -not $Subscription) {
             return $ScriptBlock.Invoke($ArgumentList)

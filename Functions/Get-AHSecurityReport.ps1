@@ -20,7 +20,7 @@ Function Get-AHSecurityReport {
     Specifies the path the report should be output to
 
 .EXAMPLE
-    Get-NonCompliantResources -AllSubscriptions
+    Get-AHSecurityReport -AllSubscriptions
 
 .INPUTS
     String
@@ -69,7 +69,7 @@ Function Get-AHSecurityReport {
                 }
                 $ReportName = $ReportPath + (Get-AzContext).name.split('(')[0].replace(' ', '') + '-Security-' + $PolicyName + '.csv'
 
-                Get-NonCompliantResources -PolicyDefinitionID $PolicyId | Export-Csv $ReportName -NoTypeInformation
+                Get-AHNonCompliantResources -PolicyDefinitionID $PolicyId | Export-Csv $ReportName -NoTypeInformation
             }
         }
     }

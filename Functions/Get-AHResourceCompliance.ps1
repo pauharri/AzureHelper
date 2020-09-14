@@ -4,7 +4,7 @@ Function Get-AHResourceCompliance {
     Prompts the user to select an Azure Policy then returns a list of resources 
     that are not comnpliant with the policy.
 .DESCRIPTION
-    Get-NonCompliantResources is a function that returns a list of resources that 
+    Get-AHResourceCompliance is a function that returns a list of resources that 
     are not compliaint with the policy that the user selects.  
 .PARAMETER AllSubscriptions
     Run this command against all subscriptions.
@@ -13,11 +13,11 @@ Function Get-AHResourceCompliance {
 .PARAMETER PolicyDefinitionId
     Specifies the PolicyDefinitionId of the policy to check for compliance against.
 .EXAMPLE
-    Get-NonCompliantResources -AllSubscriptions
+    Get-AHResourceCompliance -AllSubscriptions
 .EXAMPLE
-    Get-NonCompliantResources -AllSubscriptions | Export-Csv NonCompliantResources-Policy1.csv -NoTypeInformation
+    Get-AHResourceCompliance -AllSubscriptions | Export-Csv NonCompliantResources-Policy1.csv -NoTypeInformation
 .EXAMPLE
-    Get-NonCompliantResources -AllSubscriptions -PolicyDefinitionID '/providers/Microsoft.Authorization/policyDefinitions/34c877ad-507e-4c82-993e-3452a6e0ad3c' | Export-Csv .\StorageAccountsShouldRestrictNetworkAccess2.csv -NoTypeInformation
+    Get-AHResourceCompliance -AllSubscriptions -PolicyDefinitionID '/providers/Microsoft.Authorization/policyDefinitions/34c877ad-507e-4c82-993e-3452a6e0ad3c' | Export-Csv .\StorageAccountsShouldRestrictNetworkAccess2.csv -NoTypeInformation
 .INPUTS
     String
 .OUTPUTS
