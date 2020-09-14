@@ -70,7 +70,7 @@ Function Get-AHSavingsReport {
             $UnusedDisks = Get-UnusedDisks
             $UnusedNICs = Get-UnusedNICs
             $UnusedPIPs = Get-UnusedPIPs
-            $DBAllocation = Get-DBAllocation
+            $DBAllocation = Get-AHDBAllocation
             $ExtraDiskGBPaidFor = Get-ExtraDiskGBPaidFor
             $AHNonHubWindowsServers = Get-AHNonHubWindowsServers
             
